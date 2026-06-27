@@ -4,31 +4,38 @@ import json
 
 def load_data(file_path):
   """ Loads a JSON file """
-  with open(file_path, "r") as handle:
+  with open(file_path, "r", encoding="utf-8") as handle:
     return json.load(handle)
 
 
 def load_html_template(filepath):
     """Loads data from the html file """
-    with open(filepath, "r") as handle:
+    with open(filepath, "r", encoding="utf-8") as handle:
         return handle.read()
 
 def get_information(animals_data):
-    """gets information about name, nutrition, forst place from location list, type"""
+    """Creates HTML for all animal cards."""
     output = ""
 
-    for animals in animals_data:
-        output += '<li class="cards__item">'
+    for animal in animals_data:
+        output += '<li class="cards__item">\n'
 
-        if "name" in animals.keys():
-            output += f"Name: {animals['name']}<br/>\n"
-        if "diet" in animals['characteristics'].keys():
-            output += f"Diet: {animals['characteristics']['diet']}<br/>\n"
-        if "locations" in animals.keys():
-            output += f"Location: {animals['locations'][0]}<br/>\n"
-        if 'type' in animals['characteristics']:
-            output += f"Type: {animals['characteristics']['type']}<br/>\n"
-        output += '</li>'
+        if "name" in animal:
+            output += f'<div class="card__title">{animal["name"]}</div>\n'
+
+        output += '<p class="card__text">\n'
+
+        if "diet" in animal["characteristics"]:
+            output += f'<strong>Diet:</strong> {animal["characteristics"]["diet"]}<br/>\n'
+
+        if "locations" in animal and animal["locations"]:
+            output += f'<strong>Location:</strong> {animal["locations"][0]}<br/>\n'
+
+        if "type" in animal["characteristics"]:
+            output += f'<strong>Type:</strong> {animal["characteristics"]["type"]}<br/>\n'
+
+        output += "</p>\n"
+        output += "</li>\n"
 
     return output
 
@@ -42,6 +49,6 @@ output = get_information(animals_data)
 html = html_template.replace("__REPLACE_ANIMALS_INFO__", output)
 
 def create_html():
-    with open("animals.html", "w") as file:
+    with open("animals.html", "w", encoding="utf-8") as file:
         file.write(html)
 create_html()
