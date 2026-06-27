@@ -13,20 +13,22 @@ def load_html_template(filepath):
     with open(filepath, "r") as handle:
         return handle.read()
 
-
 def get_information(animals_data):
     """gets information about name, nutrition, forst place from location list, type"""
-    output = ''
+    output = ""
+
     for animals in animals_data:
+        output += '<li class="cards__item">'
+
         if "name" in animals.keys():
-            output += f"Name: {animals['name']}\n"
+            output += f"Name: {animals['name']}<br/>\n"
         if "diet" in animals['characteristics'].keys():
-            output += f"Diet: {animals['characteristics']['diet']}\n"
+            output += f"Diet: {animals['characteristics']['diet']}<br/>\n"
         if "locations" in animals.keys():
-            output += f"Location: {animals['locations'][0]}\n"
+            output += f"Location: {animals['locations'][0]}<br/>\n"
         if 'type' in animals['characteristics']:
-            output += f"Type: {animals['characteristics']['type']}\n"
-        output += "\n"
+            output += f"Type: {animals['characteristics']['type']}<br/>\n"
+        output += '</li>'
 
     return output
 
