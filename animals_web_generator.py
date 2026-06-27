@@ -13,29 +13,37 @@ def load_html_template(filepath):
     with open(filepath, "r", encoding="utf-8") as handle:
         return handle.read()
 
+
+def serialize_animal(animal_obj):
+    """Serializes a single animal into an HTML card."""
+    output = ''
+    output += '<li class="cards__item">\n'
+
+    if "name" in animal_obj:
+        output += f'<div class="card__title">{animal_obj["name"]}</div>\n'
+
+    output += '<p class="card__text">\n'
+
+    if "diet" in animal_obj["characteristics"]:
+        output += f'<strong>Diet:</strong> {animal_obj["characteristics"]["diet"]}<br/>\n'
+
+    if "locations" in animal_obj and animal_obj["locations"]:
+        output += f'<strong>Location:</strong> {animal_obj["locations"][0]}<br/>\n'
+
+    if "type" in animal_obj["characteristics"]:
+        output += f'<strong>Type:</strong> {animal_obj["characteristics"]["type"]}<br/>\n'
+
+    output += "</p>\n"
+    output += "</li>\n"
+
+    return output
+
+
 def get_information(animals_data):
     """Creates HTML for all animal cards."""
     output = ""
-
-    for animal in animals_data:
-        output += '<li class="cards__item">\n'
-
-        if "name" in animal:
-            output += f'<div class="card__title">{animal["name"]}</div>\n'
-
-        output += '<p class="card__text">\n'
-
-        if "diet" in animal["characteristics"]:
-            output += f'<strong>Diet:</strong> {animal["characteristics"]["diet"]}<br/>\n'
-
-        if "locations" in animal and animal["locations"]:
-            output += f'<strong>Location:</strong> {animal["locations"][0]}<br/>\n'
-
-        if "type" in animal["characteristics"]:
-            output += f'<strong>Type:</strong> {animal["characteristics"]["type"]}<br/>\n'
-
-        output += "</p>\n"
-        output += "</li>\n"
+    for animal_obj in animals_data:
+        output += serialize_animal(animal_obj)
 
     return output
 
@@ -48,7 +56,9 @@ output = get_information(animals_data)
 
 html = html_template.replace("__REPLACE_ANIMALS_INFO__", output)
 
-def create_html():
+
+def create_html(html):
+    """Writes the HTML content to animals.html."""
     with open("animals.html", "w", encoding="utf-8") as file:
         file.write(html)
-create_html()
+create_html(html)
